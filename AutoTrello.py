@@ -3,11 +3,31 @@ from datetime import datetime
 from pytz import timezone
 import re
 import os
+import boto3
 
 def AutoTrello(event, context):
+    
+    #vars for getting the api connection info from secrets manager
+    secrets_region = os.getenv('SECRETS_REGION')
+    secret_name = os.getenv('TRELLO_SECRET_NAME')
+    api_key_name = os.getenv('TRELLO_API_KEY_NAME')
+    api_token_name = os.getenv('TRELLO_API_TOKEN_NAME')
 
-    api_key = os.getenv('TRELLO_API_KEY')
-    api_token = os.getenv('TRELLO_API_TOKEN')
+    #connect to secrets manager
+    session = boto3.session.Session()
+    client = session.client(service_name='secretsmanager', region_name=args.region)
+
+    #load the secret
+    secrets = json.loads(client.get_secret_value(SecretId=secret_name)["SecretString"])
+
+    #loop through the items in the secret, find the things we want
+    for key, value in secrets.items():
+        if key == api_key_name:
+            api_key = value[:]
+        if key == api_token_name:
+            api_token = value[:]
+
+    #timezone vars
     use_timezone = os.getenv('TRELLO_TIMEZONE')
     todaysdate = datetime.now(timezone(use_timezone)).date()
 

@@ -15,7 +15,7 @@ def AutoTrello(event, context):
 
     #connect to secrets manager
     session = boto3.session.Session()
-    client = session.client(service_name='secretsmanager', region_name=args.region)
+    client = session.client(service_name='secretsmanager', region_name=secrets_region)
 
     #load the secret
     secrets = json.loads(client.get_secret_value(SecretId=secret_name)["SecretString"])

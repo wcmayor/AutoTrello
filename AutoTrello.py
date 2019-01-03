@@ -37,14 +37,14 @@ def AutoTrello(event, context):
     boards = client.list_boards()
 
     for board in boards:
-        autotrello_list = board.list_lists(list_filter="'name':'AutoTrello'")
-        for list in autotrello_list:
-            for card in list.list_cards():
-                settings_card = False
-                for label in card.labels:
-                    if label.name == "Settings":
-                        print("Found settings card '" + card.name + "'")
-                        settings_card = True
+        #autotrello_list = board.list_lists(list_filter="{'name':'AutoTrello'")
+        #for list in autotrello_list:
+        #    for card in list.list_cards():
+        #        settings_card = False
+        #        for label in card.labels:
+        #            if label.name == "Settings":
+        #                print("Found settings card '" + card.name + "'")
+        #                settings_card = True
         lists = board.list_lists()
         print("Looking for lists that match our desired names on board '" + board.name + "'")
         for l in lists:
